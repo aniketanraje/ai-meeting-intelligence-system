@@ -1,34 +1,45 @@
 # -----------------------------------------------
 # AI Meeting Notes Analyzer — Requirements
 # Python 3.11+
+# Last reviewed: May 2026
 # -----------------------------------------------
 
 # AI Orchestration
-langgraph==0.2.28
+# NOTE: langgraph 1.x has breaking API changes from 0.2.x.
+#       Pinning to latest stable 1.x (StateGraph API is stable here).
+langgraph==1.1.10
 langchain==0.3.7
 langchain-core==0.3.15
+
+# Google Gemini integration via LangChain
 langchain-google-genai==2.0.4
 
-# Google Gemini
+# Google Gemini SDK (direct, required by langchain-google-genai)
 google-generativeai==0.8.3
 
-# Speech-to-Text
+# Speech-to-Text (local Whisper)
 openai-whisper==20240930
 
 # Data Validation
 pydantic==2.9.2
 
 # Frontend
-streamlit==1.40.1
-
-# Database
-# sqlite3 is part of Python stdlib — no extra install needed
+streamlit==1.40.2
 
 # Environment
 python-dotenv==1.0.1
 
-# Utilities
+# Utilities for audio processing (Whisper dependency)
 ffmpeg-python==0.2.0
 
-# Typing (stdlib backport for < 3.11 compat if needed)
+# Typing
 typing-extensions==4.12.2
+
+# -----------------------------------------------
+# stdlib — NOT installed via pip:
+#   sqlite3     (built-in)
+#   pathlib     (built-in)
+#   dataclasses (built-in)
+#   logging     (built-in)
+#   json        (built-in)
+# -----------------------------------------------
