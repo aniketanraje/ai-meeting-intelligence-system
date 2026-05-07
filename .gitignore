@@ -1,58 +1,68 @@
-# Virtual Environment
-venv/
-.env/
+# -----------------------------------------------
+# AI Meeting Notes Analyzer — .gitignore
+# -----------------------------------------------
 
-# Python Cache
+# Environment — NEVER commit secrets
+.env
+
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+.eggs/
 
-# Environment Variables
-.env
-.env.*
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
 
-# SQLite Database
-*.db
-*.sqlite3
-
-# Logs
-*.log
-
-# IDE Files
-.idea/
-.vscode/
-
-# OS Files
-.DS_Store
-Thumbs.db
-
-# Streamlit Cache
-.streamlit/secrets.toml
-
-# Testing / Coverage
+# Pytest / Coverage
 .pytest_cache/
 .coverage
 htmlcov/
+*.xml
 
-# Build Artifacts
-build/
-dist/
-*.egg-info/
-
-# Temporary Files
-tmp/
-temp/
-outputs/
-
-# Jupyter
-.ipynb_checkpoints/
-
-# Audio / Generated Files
-*.wav
-*.mp3
-*.m4a
-
-# Misc
-*.bak
+# IDE
+.idea/
+.vscode/
 *.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/
+
+# Database (do not commit generated DB)
+db/*.db
+db/*.db-journal
+db/*.db-wal
+
+# Outputs (generated runtime artifacts)
+outputs/*.json
+
+# Audio uploads (temporary, never persist)
+data/audio/
+*.mp3
+*.wav
+*.m4a
+*.ogg
+*.flac
+*.webm
+
+# Whisper model cache
+~/.cache/whisper/
+
+# Logs
+*.log
+logs/
+
+# OS
+*.DS_Store

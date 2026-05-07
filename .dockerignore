@@ -1,0 +1,51 @@
+# -----------------------------------------------
+# AI Meeting Notes Analyzer — .dockerignore
+# -----------------------------------------------
+
+# Environment secrets
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+
+# Version control
+.git/
+.gitignore
+
+# Generated outputs (runtime artifacts)
+outputs/*.json
+db/*.db
+
+# Audio uploads (transient, never baked into image)
+data/audio/
+*.mp3
+*.wav
+*.m4a
+*.ogg
+*.flac
+
+# Logs
+*.log
+logs/
+
+# Tests (optional: remove if you want tests inside container)
+tests/
+
+# OS
+.DS_Store
+Thumbs.db
