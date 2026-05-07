@@ -1,0 +1,58 @@
+# Virtual Environment
+venv/
+.env/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment Variables
+.env
+.env.*
+
+# SQLite Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# IDE Files
+.idea/
+.vscode/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Streamlit Cache
+.streamlit/secrets.toml
+
+# Testing / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build Artifacts
+build/
+dist/
+*.egg-info/
+
+# Temporary Files
+tmp/
+temp/
+outputs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Audio / Generated Files
+*.wav
+*.mp3
+*.m4a
+
+# Misc
+*.bak
+*.swp
