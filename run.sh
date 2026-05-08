@@ -1,56 +1,96 @@
 #!/bin/bash
-# -----------------------------------------------
-# AI Meeting Notes Analyzer — Local Run Script
-# Usage: bash run.sh
-# -----------------------------------------------
 
-set -e  # Exit immediately on error
+set -e
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VENV_DIR="$PROJECT_ROOT/venv"
 ENV_FILE="$PROJECT_ROOT/.env"
-REQUIREMENTS="$PROJECT_ROOT/requirements.txt"
 
-echo "-----------------------------------------------"
-echo " AI Meeting Notes Analyzer"
-echo "-----------------------------------------------"
+echo "=========================================="
+echo " AI Meeting Intelligence System Launcher"
+echo "=========================================="
 
-# Step 1: Verify .env exists
-if [ ! -f "$ENV_FILE" ]; then
-    echo "[WARN] .env file not found."
-    echo "[INFO] Copying .env.example → .env"
-    cp "$PROJECT_ROOT/.env.example" "$ENV_FILE"
-    echo "[ACTION REQUIRED] Open .env and set your API keys before proceeding."
+echo "[INFO] Project root: $PROJECT_ROOT"
+
+# -------------------------------------------------------------------
+# Python version check
+# -------------------------------------------------------------------
+
+PYTHON_VERSION=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
+
+if [[ "$PYTHON_VERSION" != "3.12" ]]; then
+    echo "[WARN] Recommended Python version is 3.12"
+    echo "[INFO] Detected Python version: $PYTHON_VERSION"
+fi
+
+# -------------------------------------------------------------------
+# Environment file validation
+# -------------------------------------------------------------------
+
+if [[ ! -f "$ENV_FILE" ]]; then
+    echo "[ERROR] Missing .env file."
+    echo "[INFO] Create a .env file before running the application."
     exit 1
 fi
 
-# Step 2: Create virtual environment if missing
-if [ ! -d "$VENV_DIR" ]; then
-    echo "[INFO] Creating virtual environment..."
-    python3 -m venv "$VENV_DIR"
-    echo "[INFO] Virtual environment created at $VENV_DIR"
+echo "[INFO] .env file detected."
+
+# -------------------------------------------------------------------
+# ffmpeg validation
+# -------------------------------------------------------------------
+
+if ! command -v ffmpeg &> /dev/null; then
+    echo "[WARN] ffmpeg is not installed."
+    echo "[WARN] Audio transcription may fail."
+else
+    echo "[INFO] ffmpeg detected."
 fi
 
-# Step 3: Activate virtual environment
+# -------------------------------------------------------------------
+# Create virtual environment if missing
+# -------------------------------------------------------------------
+
+if [[ ! -d "$PROJECT_ROOT/venv" ]]; then
+    echo "[INFO] Creating virtual environment..."
+    python3 -m venv "$PROJECT_ROOT/venv"
+else
+    echo "[INFO] Existing virtual environment detected."
+fi
+
+# -------------------------------------------------------------------
+# Activate virtual environment
+# -------------------------------------------------------------------
+
 echo "[INFO] Activating virtual environment..."
-source "$VENV_DIR/bin/activate"
+source "$PROJECT_ROOT/venv/bin/activate"
 
-# Step 4: Install/upgrade dependencies
-echo "[INFO] Installing dependencies..."
-pip install --upgrade pip --quiet
-pip install -r "$REQUIREMENTS" --quiet
-echo "[INFO] Dependencies installed."
+# -------------------------------------------------------------------
+# Upgrade pip
+# -------------------------------------------------------------------
 
-# Step 5: Initialize required runtime directories
-mkdir -p "$PROJECT_ROOT/outputs"
-mkdir -p "$PROJECT_ROOT/db"
-mkdir -p "$PROJECT_ROOT/data/sample_transcripts"
-echo "[INFO] Runtime directories verified."
+echo "[INFO] Upgrading pip..."
+pip install --upgrade pip
 
-# Step 6: Launch Streamlit application
-echo "[INFO] Launching application..."
-echo "-----------------------------------------------"
-echo " Open browser → http://localhost:8501"
-echo "-----------------------------------------------"
+# -------------------------------------------------------------------
+# Install dependencies
+# -------------------------------------------------------------------
 
-streamlit run "$PROJECT_ROOT/app/streamlit_app.py"
+echo "[INFO] Installing project dependencies..."
+pip install -r "$PROJECT_ROOT/requirements.txt"
+
+# -------------------------------------------------------------------
+# Startup validation
+# -------------------------------------------------------------------
+
+echo "[INFO] Running startup validation..."
+
+python -c "import streamlit, langgraph, groq" \
+    && echo "[INFO] Core dependencies validated successfully." \
+    || { echo '[ERROR] Dependency validation failed.'; exit 1; }
+
+# -------------------------------------------------------------------
+# Launch application
+# -------------------------------------------------------------------
+
+echo "[INFO] Launching Streamlit application..."
+
+PYTHONPATH="$PROJECT_ROOT" streamlit run "$PROJECT_ROOT/app/streamlit_app.py"
