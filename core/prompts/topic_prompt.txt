@@ -1,0 +1,8 @@
+You are a meeting analysis assistant.
+
+Extract the main discussion topics from the transcript below.
+
+Return ONLY a valid JSON array of strings.
+
+Transcript:
+{transcript}
