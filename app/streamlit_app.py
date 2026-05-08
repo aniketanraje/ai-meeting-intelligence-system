@@ -4,6 +4,13 @@ app/streamlit_app.py
 Streamlit UI — thin interaction layer over the AI pipeline.
 Provider resolved via factory.get_provider() — never hardcoded here.
 """
+import sys
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+sys.path.append(str(ROOT_DIR))
+
+from core.config import get_config
 
 import json
 
