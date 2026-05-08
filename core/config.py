@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 # Constants
 # -----------------------------------------------
 
-SUPPORTED_PROVIDERS: set[str] = {"gemini", "openai", "claude"}
+SUPPORTED_PROVIDERS: set[str] = {"gemini", "openai", "claude", "groq"}
 
 SUPPORTED_WHISPER_MODELS: set[str] = {"tiny", "base", "small", "medium", "large"}
 
@@ -28,6 +28,7 @@ PROVIDER_DEFAULT_MODELS: dict[str, str] = {
     "gemini": "gemini-1.5-pro",
     "openai": "gpt-4o",
     "claude": "claude-3-5-sonnet-20241022",
+    "groq":   "llama-3.3-70b-versatile",
 }
 
 # -----------------------------------------------
@@ -68,6 +69,7 @@ class AppConfig:
     gemini_api_key: str
     openai_api_key: str
     anthropic_api_key: str
+    groq_api_key: str
 
     # Database (env: SQLITE_DB_PATH)
     db_path: str
@@ -96,7 +98,7 @@ def load_config() -> AppConfig:
     errors: list[str] = []
 
     # --- Provider ---
-    model_provider = os.getenv("MODEL_PROVIDER", "gemini").strip().lower()
+    model_provider = os.getenv("MODEL_PROVIDER", "groq").strip().lower()
     if model_provider not in SUPPORTED_PROVIDERS:
         errors.append(
             f"MODEL_PROVIDER='{model_provider}' is invalid. "
@@ -129,9 +131,10 @@ def load_config() -> AppConfig:
     gemini_api_key = os.getenv("GEMINI_API_KEY", "").strip()
     openai_api_key = os.getenv("OPENAI_API_KEY", "").strip()
     anthropic_api_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
+    groq_api_key = os.getenv("GROQ_API_KEY", "").strip()
 
     _validate_api_key(
-        model_provider, gemini_api_key, openai_api_key, anthropic_api_key, errors
+        model_provider, gemini_api_key, openai_api_key, anthropic_api_key, groq_api_key, errors
     )
 
     # --- Database ---
@@ -171,6 +174,7 @@ def load_config() -> AppConfig:
         gemini_api_key=gemini_api_key,
         openai_api_key=openai_api_key,
         anthropic_api_key=anthropic_api_key,
+        groq_api_key=groq_api_key,
         db_path=db_path,
         whisper_model=whisper_model,
         log_level=log_level,
@@ -187,6 +191,7 @@ def _validate_api_key(
     gemini_key: str,
     openai_key: str,
     anthropic_key: str,
+    groq_key: str,
     errors: list[str],
 ) -> None:
     """Validate that the active provider's API key is present and not a placeholder."""
@@ -194,6 +199,7 @@ def _validate_api_key(
         "gemini": (gemini_key,    "GEMINI_API_KEY"),
         "openai": (openai_key,    "OPENAI_API_KEY"),
         "claude": (anthropic_key, "ANTHROPIC_API_KEY"),
+        "groq":   (groq_key,      "GROQ_API_KEY"),
     }
 
     if provider not in key_map:
@@ -221,6 +227,7 @@ def get_active_api_key(config: AppConfig) -> str:
         "gemini": config.gemini_api_key,
         "openai": config.openai_api_key,
         "claude": config.anthropic_api_key,
+        "groq":   config.groq_api_key,
     }
     return key_map.get(config.model_provider, "")
 
