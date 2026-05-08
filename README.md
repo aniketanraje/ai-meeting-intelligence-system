@@ -1,5 +1,23 @@
 # 📋 AI Meeting Notes Analyzer
+## Live Demo
 
+https://multiagent-meeting-analyzer.streamlit.app/
+
+## Features
+
+- Multi-agent meeting analysis
+
+- Audio transcription with Whisper
+
+- Action item extraction
+
+- Priority classification
+
+- Owner assignment
+
+- SQLite persistence
+
+- Streamlit Cloud deployment
 > **Real-Time Meeting Intelligence System with Stateful Multi-Agent LLM Pipeline**
 >
 > A modular AI pipeline that transforms unstructured meeting transcripts and audio recordings into validated, structured, actionable intelligence — powered by LangGraph orchestration and Groq inference.
